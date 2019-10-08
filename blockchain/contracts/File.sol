@@ -2,6 +2,7 @@ pragma solidity ^0.5.11;
 
 contract File {
 
+    string public file_name;
     address public creator;
     address[] public owners;
 
@@ -42,9 +43,16 @@ contract File {
         _;
     }
 
-    constructor (address _creator) public {
-        creator = _creator;
-        add_owner(_creator, 4);
+    constructor (string memory _file_name) public {
+        file_name = _file_name;
+        creator = msg.sender;
+        owners.push(creator);
+        owner_power[creator] = 4;
+        is_owner_exists[creator] = true;
+    }
+
+    function updateFileName(string memory _file_name) public restricted_owner_has_power(4) {
+        file_name = _file_name;
     }
 
     function add_key(string memory _key) public {
