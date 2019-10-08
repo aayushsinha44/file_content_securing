@@ -68,7 +68,8 @@ func main() {
 
 	// Upload File to IPFS
 	text := "Hello World"
-	ipfsHash, err := ipfs.UploadFile(text)
+	ipfsInfo := &ipfs.IPFSInfo{IPFSUrl: "localhost:5001"}
+	ipfsHash, err := ipfs.UploadFile(text, ipfsInfo)
 	must(err)
 	fmt.Println("File succesfully updated to ipfs")
 
