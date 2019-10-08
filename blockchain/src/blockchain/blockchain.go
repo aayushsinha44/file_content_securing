@@ -169,15 +169,121 @@ func (b *BlockChain) UpdateFileName(fa *FileAddress, fileName string) (string, e
 	return "success", err
 }
 
-func (b *BlockChain) GetOwnerList(fa *FileAddress) ([]common.Address, error) {
+func (b *BlockChain) GetOwnerList(fa *FileAddress) ([]string, error) {
 	instance, err := file.NewFile(fa.GetHexAddress(), b.Client)
 	if err != nil {
 		return nil, err
 	}
-	// TODO changes bytes to hex
 	ownerList, err := instance.GetOwnerList(b.AuthQuery)
 	if err != nil {
 		return nil, err
 	}
-	return ownerList, nil
+	var ownerListString []string
+	for _, element := range ownerList {
+		ownerListString = append(ownerListString, common.BytesToAddress(element.Bytes()).Hex())
+	}
+	return ownerListString, nil
+}
+
+func (b *BlockChain) GetOwnerPower(fa *FileAddress, address string) (*big.Int, error) {
+	ownerAddressHex := common.HexToAddress(address)
+	instance, err := file.NewFile(fa.GetHexAddress(), b.Client)
+	if err != nil {
+		return big.NewInt(-1), err
+	}
+	ownerPower, err := instance.GetOwnerPower(b.AuthQuery, ownerAddressHex)
+	if err != nil {
+		return big.NewInt(-1), err
+	}
+	return ownerPower, nil
+}
+
+func (b *BlockChain) GetIPFSHash(fa *FileAddress) (string, error) {
+	instance, err := file.NewFile(fa.GetHexAddress(), b.Client)
+	if err != nil {
+		return "", err
+	}
+	ipfshash, err := instance.GetIpfsHash(b.AuthQuery)
+	if err != nil {
+		return "", err
+	}
+	return ipfshash, nil
+}
+
+func (b *BlockChain) UpdateIPFSHash(fa *FileAddress, hash string) (string, error) {
+	instance, err := file.NewFile(fa.GetHexAddress(), b.Client)
+	if err != nil {
+		return "failed", err
+	}
+	auth, err := b.getAuthTransactOpts(nil)
+	if err != nil {
+		return "", err
+	}
+
+	_, err = instance.UpdateHash(auth, hash)
+	if err != nil {
+		return "failed", err
+	}
+	return "success", err
+}
+
+func (b *BlockChain) GetKey(fa *FileAddress) (string, error) {
+	instance, err := file.NewFile(fa.GetHexAddress(), b.Client)
+	if err != nil {
+		return "", err
+	}
+	key, err := instance.GetKey(b.AuthQuery)
+	if err != nil {
+		return "", err
+	}
+	return key, nil
+}
+
+func (b *BlockChain) UpdateKey(fa *FileAddress, key string) (string, error) {
+	instance, err := file.NewFile(fa.GetHexAddress(), b.Client)
+	if err != nil {
+		return "failed", err
+	}
+	auth, err := b.getAuthTransactOpts(nil)
+	if err != nil {
+		return "failed", err
+	}
+
+	_, err = instance.UpdateKey(auth, key)
+	if err != nil {
+		return "failed", err
+	}
+	return "success", err
+}
+
+func (b *BlockChain) AddOwner(fa *FileAddress, address string, power int64) (string, error) {
+	instance, err := file.NewFile(fa.GetHexAddress(), b.Client)
+	if err != nil {
+		return "failed", err
+	}
+	auth, err := b.getAuthTransactOpts(nil)
+	if err != nil {
+		return "", err
+	}
+	_, err = instance.AddOwner(auth, common.HexToAddress(address), big.NewInt(power))
+	if err != nil {
+		return "failed", err
+	}
+	return "success", err
+}
+
+func (b *BlockChain) ChangeOwnerPower(fa *FileAddress, address string, power int64) (string, error) {
+	instance, err := file.NewFile(fa.GetHexAddress(), b.Client)
+	if err != nil {
+		return "failed", err
+	}
+	auth, err := b.getAuthTransactOpts(nil)
+	if err != nil {
+		return "", err
+	}
+	_, err = instance.ChangeOwnerPower(auth, common.HexToAddress(address), big.NewInt(power))
+	if err != nil {
+		return "failed", err
+	}
+	return "success", err
 }

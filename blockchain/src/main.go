@@ -41,13 +41,49 @@ func main() {
 	must(err)
 	fmt.Println("New File Name:", fileName)
 
+	// Adding new Owner
+	status, err = bc.AddOwner(fa, "0x761367D4b30eAcFaA250A03CdD2c78e949f6Bb1a", 3)
+	must(err)
+	fmt.Println("New Owner Added: ", status)
+
+	// Change Power of owner
+	status, err = bc.ChangeOwnerPower(fa, "0x761367D4b30eAcFaA250A03CdD2c78e949f6Bb1a", 1)
+	must(err)
+	fmt.Println("Owner Power Changed: ", status)
+
 	// Getting owner list
 	addressList, err := bc.GetOwnerList(fa)
 	must(err)
+	fmt.Println("Owner List")
 	fmt.Println(addressList)
-	// for index, element := range addressList {
-	// 	fmt.Println(index, element)
-	// }
+
+	// Owner Power
+	for _, element := range addressList {
+		status, err := bc.GetOwnerPower(fa, element)
+		must(err)
+		fmt.Println("Owner: ", element)
+		fmt.Println("Owner Power: ", status)
+	}
+
+	// Update IPFS Hash
+	status, err = bc.UpdateIPFSHash(fa, "ipfs_hash_value")
+	must(err)
+	fmt.Println("IPFS Hash updated")
+
+	// Get IPFS Hash
+	hash, err := bc.GetIPFSHash(fa)
+	must(err)
+	fmt.Println("IPFS Hash: ", hash)
+
+	// Update key
+	status, err = bc.UpdateKey(fa, "new-encrpytion-key")
+	must(err)
+	fmt.Println("key updated")
+
+	// Get IPFS Hash
+	key, err := bc.GetKey(fa)
+	must(err)
+	fmt.Println("Key: ", key)
 
 }
 

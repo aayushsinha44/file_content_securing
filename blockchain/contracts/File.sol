@@ -63,7 +63,7 @@ contract File {
     
     function add_owner(address _owner, uint _power) public
             restricted_owner_doesnot_exists(_owner) restricted_owner_has_power(3) {
-        owners.push(creator);
+        owners.push(_owner);
         owner_power[_owner] = _power;
         is_owner_exists[_owner] = true;
     }
