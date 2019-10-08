@@ -5,6 +5,7 @@ import (
 	"log"
 
 	"github.com/aayushsinha44/file_content_securing/blockchain/src/blockchain"
+	"github.com/aayushsinha44/file_content_securing/blockchain/src/ipfs"
 )
 
 func main() {
@@ -65,8 +66,14 @@ func main() {
 		fmt.Println("Owner Power: ", status)
 	}
 
+	// Upload File to IPFS
+	text := "Hello World"
+	ipfsHash, err := ipfs.UploadFile(text)
+	must(err)
+	fmt.Println("File succesfully updated to ipfs")
+
 	// Update IPFS Hash
-	status, err = bc.UpdateIPFSHash(fa, "ipfs_hash_value")
+	status, err = bc.UpdateIPFSHash(fa, ipfsHash)
 	must(err)
 	fmt.Println("IPFS Hash updated")
 
