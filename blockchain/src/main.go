@@ -9,12 +9,13 @@ import (
 )
 
 func main() {
-	privateKey := "5afecc0e14aed67e2999ecfddc34b8054e8ccb48268f961ee04485c6e4e303ae"
+
+	privateKey := "28a002ac2efb52df9d7b6f73ae7f821fd7fa979bf7b1586a6208b4aa8f62c762"
 
 	userInfo, err := blockchain.GetUserInfo(privateKey)
 	must(err)
 	blockChainInfo := &blockchain.BlockChainInfo{
-		ClientAddress: "localhost",
+		ClientAddress: "192.168.113.175",
 		ClientPort:    7545,
 		IsHttps:       false,
 	}
@@ -93,6 +94,17 @@ func main() {
 	must(err)
 	fmt.Println("Key: ", key)
 
+	// Unprivilaged access
+	hackerPrivateKey := "729eb80a38ca9b5366402352b0956f28d74463c0b1018cf00330a2c1d4834fcd"
+	userInfo, err = blockchain.GetUserInfo(hackerPrivateKey)
+	must(err)
+
+	bc, err = userInfo.MakeConnection(nil, blockChainInfo)
+	must(err)
+
+	key, err = bc.GetKey(fa)
+	must(err)
+	fmt.Println("Key: ", key)
 }
 
 func must(err error) {
