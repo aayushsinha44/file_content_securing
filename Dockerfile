@@ -37,11 +37,8 @@ RUN cd /opt && wget https://storage.googleapis.com/golang/go${GOVERSION}.linux-a
 COPY --from=builder /go/go-ethereum/ /opt/go/src/github.com/ethereum/go-ethereum/
 RUN go get github.com/ipfs/go-ipfs-api 
 RUN go get github.com/allegro/bigcache
-
-WORKDIR /root/.go/src/github.com/aayushsinha44/file_content_securing/
-COPY . .
-RUN chmod +x blockchain/build.sh
-RUN cd blockchain/ ./build.sh
+RUN apt clean
+COPY ipfs ipfs
 RUN chmod +x ipfs
 RUN ./ipfs init
 RUN ./ipfs daemon &

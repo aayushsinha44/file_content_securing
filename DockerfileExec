@@ -1,0 +1,5 @@
+FROM aayushsinha44/fcs
+WORKDIR /root/.go/src/github.com/aayushsinha44/file_content_securing/
+COPY . .
+RUN chmod +x blockchain/build.sh
+RUN cd blockchain/ ./build.sh
