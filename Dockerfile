@@ -38,7 +38,3 @@ COPY --from=builder /go/go-ethereum/ /opt/go/src/github.com/ethereum/go-ethereum
 RUN go get github.com/ipfs/go-ipfs-api 
 RUN go get github.com/allegro/bigcache
 RUN apt clean
-COPY ipfs ipfs
-RUN chmod +x ipfs
-RUN ./ipfs init
-RUN ./ipfs daemon &
