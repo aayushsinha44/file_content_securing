@@ -4,12 +4,12 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"github.com/gorilla/mux"
+
+	"github.com/aayushsinha44/file_content_securing/blockchain/src/backend"
 	"github.com/aayushsinha44/file_content_securing/blockchain/src/blockchain"
 	"github.com/aayushsinha44/file_content_securing/blockchain/src/ipfs"
-	"github.com/aayushsinha44/file_content_securing/blockchain/src/backend"
+	"github.com/gorilla/handlers"
 )
-	
 
 func main1() {
 
@@ -36,7 +36,7 @@ func main1() {
 	fileName, err := bc.GetFileName(fa)
 	must(err)
 	fmt.Println("File Name:", fileName)
-	
+
 	// Updating file Name
 	status, err := bc.UpdateFileName(fa, "TestFileChanged")
 	must(err)
@@ -115,13 +115,14 @@ func must(err error) {
 		log.Fatal(err)
 	}
 }
-func main(){
+func main() {
 	router := backend.NewRouter() // create routes
 	// These two lines are important if you're designing a front-end to utilise this API methods
 	allowedOrigins := handlers.AllowedOrigins([]string{"*"})
 	allowedMethods := handlers.AllowedMethods([]string{"GET", "POST", "DELETE", "PUT"})
 
 	// Launch server with CORS validations
-	log.Fatal(http.ListenAndServe(":"+"8081", handlers.CORS(allowedOrigins, allowedMethods)(router)))
+	fmt.Println("Starting server")
+	log.Fatal(http.ListenAndServe(":8081", handlers.CORS(allowedOrigins, allowedMethods)(router)))
 
 }

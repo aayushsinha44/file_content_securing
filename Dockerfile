@@ -37,4 +37,6 @@ RUN cd /opt && wget https://storage.googleapis.com/golang/go${GOVERSION}.linux-a
 COPY --from=builder /go/go-ethereum/ /opt/go/src/github.com/ethereum/go-ethereum/
 RUN go get github.com/ipfs/go-ipfs-api 
 RUN go get github.com/allegro/bigcache
+RUN go get github.com/gorilla/mux
+RUN go get github.com/gorilla/handlers
 RUN apt clean

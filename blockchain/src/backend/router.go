@@ -1,10 +1,12 @@
 package backend
-import(
+
+import (
 	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
 )
+
 type Route struct {
 	Name        string
 	Method      string
@@ -18,33 +20,34 @@ var routes = Routes{
 		"Add Owner",
 		"POST",
 		"/AddOwner",
-		endpoints.AddOwner,
+		AddOwner,
 	},
 	Route{
 		"Get Owner List",
 		"GET",
 		"/GetOwnerList",
-		endpoints.GetOwnerList,
+		GetOwnerList,
 	},
 	Route{
 		"Get File Name",
 		"POST",
 		"/GetFileName",
-		endpoints.GetFileName,
+		GetFileName,
 	},
 	Route{
 		"Create New File",
 		"POST",
 		"/CreateNewFile",
-		endpoints.CreateNewFile,
+		CreateNewFile,
 	},
 	Route{
 		"Upload file on IPFS",
 		"POST",
 		"/UploadFile",
-		endpoints.UploadFile
-	}
+		UploadFile,
+	},
 }
+
 func NewRouter() *mux.Router {
 	router := mux.NewRouter().StrictSlash(true)
 	for _, route := range routes {
