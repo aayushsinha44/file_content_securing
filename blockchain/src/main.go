@@ -3,19 +3,22 @@ package main
 import (
 	"fmt"
 	"log"
-
+	"net/http"
+	"github.com/gorilla/mux"
 	"github.com/aayushsinha44/file_content_securing/blockchain/src/blockchain"
 	"github.com/aayushsinha44/file_content_securing/blockchain/src/ipfs"
+	"github.com/aayushsinha44/file_content_securing/blockchain/src/backend"
 )
+	
 
-func main() {
+func main1() {
 
-	privateKey := "28a002ac2efb52df9d7b6f73ae7f821fd7fa979bf7b1586a6208b4aa8f62c762"
+	privateKey := "4f06fea6b6248b94a6cf64d3cbcb3e6823ed1058dbecebf3915d91ba79751894"
 
 	userInfo, err := blockchain.GetUserInfo(privateKey)
 	must(err)
 	blockChainInfo := &blockchain.BlockChainInfo{
-		ClientAddress: "192.168.113.175",
+		ClientAddress: "192.168.114.27",
 		ClientPort:    7545,
 		IsHttps:       false,
 	}
@@ -33,7 +36,7 @@ func main() {
 	fileName, err := bc.GetFileName(fa)
 	must(err)
 	fmt.Println("File Name:", fileName)
-
+	
 	// Updating file Name
 	status, err := bc.UpdateFileName(fa, "TestFileChanged")
 	must(err)
@@ -111,4 +114,14 @@ func must(err error) {
 	if err != nil {
 		log.Fatal(err)
 	}
+}
+func main(){
+	router := backend.NewRouter() // create routes
+	// These two lines are important if you're designing a front-end to utilise this API methods
+	allowedOrigins := handlers.AllowedOrigins([]string{"*"})
+	allowedMethods := handlers.AllowedMethods([]string{"GET", "POST", "DELETE", "PUT"})
+
+	// Launch server with CORS validations
+	log.Fatal(http.ListenAndServe(":"+"8081", handlers.CORS(allowedOrigins, allowedMethods)(router)))
+
 }
