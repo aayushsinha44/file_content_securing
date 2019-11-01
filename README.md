@@ -18,10 +18,10 @@ docker run --network=host ipfs/go-ipfs
 
 if you change some code execute this command first or if you are running the code for first time
 ```
-docker build -n DockerfileExec -t <dockerhub:username>/fcsexec .
+docker build -f DockerfileExec -t <dockerhub:username>/fcsexec .
 ```
 
 for running code use this command. This will execute blockchain/src/main.go
 ```
-docker run -network=host -it <dockerhub:username>/fcsexec
+docker run --network=host -p 8081:8081 -it <dockerhub:username>/fcsexec
 ```
