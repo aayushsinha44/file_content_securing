@@ -1,12 +1,12 @@
 # File Content Securing
 
-Uses blockhain for securing the content of files.
+Uses Blockhain technology & IPFS protocol for securing the contents of files.
 
 
 ## Tech Stack
 1. Ethereum
 2. Golang
-3. Solidiy
+3. Solidity
 4. Reactjs
 
 ## Execution
